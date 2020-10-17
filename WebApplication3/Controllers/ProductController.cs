@@ -96,7 +96,9 @@ namespace WebApplication3.Controllers
             {
                 Result = result,
                 CategoryDetails = result.GroupBy(x => x.Category).Select(x => new GroupDetail(x.Key, x.Count())).ToList(),
-                BrandDetails = result.GroupBy(x => x.Brand).Select(x => new GroupDetail(x.Key ?? "Others", x.Count())).ToList()
+                BrandDetails = result.GroupBy(x => x.Brand).Select(x => new GroupDetail(x.Key ?? "Others", x.Count())).ToList(),
+                PriceRangeDetails = result.GroupBy(x => x.RealPrice<100 ? "0-99" : x.RealPrice<1000 ? "100-999" : x.RealPrice<10000 ? "1000-9999" : "10000 - ").Select(x => new GroupDetail(x.Key, x.Count())).ToList()
+                
             };
         }
 

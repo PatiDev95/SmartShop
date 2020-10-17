@@ -9,7 +9,7 @@ namespace WebApplication3.DTO
 
         public List<GroupDetail> CategoryDetails { get; set; }
         public List<GroupDetail> BrandDetails { get; set; }
-
+        public List<GroupDetail> PriceRangeDetails { get; set; }
 
     }        
 }
