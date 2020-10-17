@@ -15,8 +15,6 @@ namespace WebApplication3.Controllers
     {
         public static List<Product> ProductRepository = new List<Product>
         {
-            new Product.Builder().WithCategory("Ubrania").WithPrice(50).WithName("T-shirt").WithDiscount(25).Build(),
-
             new Product("Clothes", 18, "T-shirt", "Biały zwykły.", ProductCondition.New).WithDiscount(10),
             new Product("Clothes", 100, "Jeans", "Niebieskie, materiał sztywny", ProductCondition.New).WithBrand("Big Star").WithWeight(0.5),
             new Product("Clothes", 350, "Skirt", "czerwona mindi", ProductCondition.New),

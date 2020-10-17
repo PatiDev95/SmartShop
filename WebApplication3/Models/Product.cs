@@ -28,15 +28,7 @@ namespace WebApplication3.Models
         public ProductCondition ProductCondition { get; set; }
         public string Brand { get; set; }
         public double Weight { get; set; }
-
-        public Product(Builder builder)
-        {
-            Id = Guid.NewGuid();
-            Category = builder.Category;
-            Price = builder.Price;
-            Name = builder.Name;
-            Discount = builder.Discount;
-        }
+        public bool IsArchived { get; set; }
 
         public Product(string category, decimal price, string name, string description, ProductCondition productCondition)
         {
@@ -46,6 +38,7 @@ namespace WebApplication3.Models
             SetName(name);
             SetDescription(description);
             ProductCondition = productCondition;
+            IsArchived = false;
         }
 
         public Product WithWeight(double weight)
@@ -97,43 +90,6 @@ namespace WebApplication3.Models
                 throw new Exception($"The description exceeds the number of characters allowed. Your number of characters: {description.Length} The maximum number of characters is: 5000");
             }
             Description = description;
-        }
-
-        public class Builder
-        {
-            internal string Category;
-            internal decimal Price;
-            internal string Name;
-            internal int Discount;
-
-            public Builder WithCategory(string category)
-            {
-                Category = category;
-                return this;
-            }
-
-            public Builder WithPrice(decimal price)
-            {
-                Price = price;
-                return this;
-            }
-
-            public Builder WithName (string name)
-            {
-                Name = name;
-                return this;
-            }
-
-            public Builder WithDiscount (int discount)
-            {
-                Discount = discount;
-                return this;
-            }
-
-            public Product Build()
-            {
-                return new Product(this);
-            }
         }
 
         /// <summary>
