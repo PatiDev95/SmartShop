@@ -41,6 +41,18 @@ namespace WebApplication3.Models
             IsArchived = false;
         }
 
+        public void BuyProduct()
+        {
+            if(IsArchived == false)
+            {
+                IsArchived = true;
+            }
+            else
+            {
+                throw new Exception("The product has just been sold. You cannot buy the product.");
+            } 
+        }
+
         public Product WithWeight(double weight)
         {
             if(weight<0)

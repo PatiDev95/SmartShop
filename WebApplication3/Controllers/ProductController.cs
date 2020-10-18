@@ -54,13 +54,13 @@ namespace WebApplication3.Controllers
         [HttpGet]
         public List<Product> GetAllListOfProducts()
         {
-            return ProductRepository;
+            return ProductRepository.Where(x => x.IsArchived == false).ToList();
         }
 
         [HttpGet("category/{category}")]
         public IActionResult GetProductsByCategory(string category)
         {
-            var listOfProducts = ProductRepository.Where(x => x.Category.ToLower() == category.ToLower()).ToList();
+            var listOfProducts = ProductRepository.Where(x => x.Category.ToLower() == category.ToLower() && x.IsArchived == false).ToList();
             if (listOfProducts.Count() == 0)
             {
                 return NotFound("Category not found.");
@@ -84,6 +84,7 @@ namespace WebApplication3.Controllers
         {
             var result = ProductRepository
                 .Where(x =>
+                    (x.IsArchived == false) &&
                     (productName != null ? x.Name.ToLower().Contains(productName.ToLower()) : true) &&
                     (brandName != null ? (x.Brand != null ? x.Brand.ToLower().Contains(brandName.ToLower()) : false) : true) &&
                     (from != null ? x.RealPrice > from.Value : true) &&
@@ -104,6 +105,14 @@ namespace WebApplication3.Controllers
         public List<string> SearchBrand()
         {
             return ProductRepository.Where(x => x.Brand != null).Select(x => x.Brand).Distinct().ToList();
+        }
+
+        [HttpPut("buyProduct")]
+        public string BuyProduct(Guid id)
+        {
+            var result2 = ProductRepository.SingleOrDefault(x => x.Id == id);
+            result2.BuyProduct();
+            return "You just bought the product. Your order is being processed.";
         }
 
         [HttpGet("main")]
