@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using WebApplication3.Commands;
 using WebApplication3.DTO;
+using WebApplication3.EF;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -51,16 +52,18 @@ namespace WebApplication3.Controllers
             new Product("Dla dorosłych", 50, "Prezerwatywa", "Najlepsze uczucie bliskości.", ProductCondition.New).WithBrand("DurexX")
         };
 
+        private readonly ShopContext db = new ShopContext();
+
         [HttpGet]
         public List<Product> GetAllListOfProducts()
         {
-            return ProductRepository.Where(x => x.IsArchived == false).ToList();
+            return db.Products.Where(x => x.IsArchived == false).ToList();
         }
 
         [HttpGet("category/{category}")]
         public IActionResult GetProductsByCategory(string category)
         {
-            var listOfProducts = ProductRepository.Where(x => x.Category.ToLower() == category.ToLower() && x.IsArchived == false).ToList();
+            var listOfProducts = db.Products.Where(x => x.Category.ToLower() == category.ToLower() && x.IsArchived == false).ToList();
             if (listOfProducts.Count() == 0)
             {
                 return NotFound("Category not found.");
@@ -75,14 +78,15 @@ namespace WebApplication3.Controllers
         public Product Create([FromBody] CreateProduct command)
         {
             var newProduct = new Product(command.Category, command.Price, command.Name, command.Description, command.ProductCondition);
-            ProductRepository.Add(newProduct);
+            db.Products.Add(newProduct);
+            db.SaveChanges();
             return newProduct;
         }
 
         [HttpGet("search")]
         public SearchResult Search([FromQuery]string productName, [FromQuery]string brandName, [FromQuery]decimal? from, [FromQuery]decimal? to)
         {
-            var result = ProductRepository
+            var result = db.Products
                 .Where(x =>
                     (x.IsArchived == false) &&
                     (productName != null ? x.Name.ToLower().Contains(productName.ToLower()) : true) &&
@@ -104,21 +108,22 @@ namespace WebApplication3.Controllers
         [HttpGet("searchBrand")]
         public List<string> SearchBrand()
         {
-            return ProductRepository.Where(x => x.Brand != null).Select(x => x.Brand).Distinct().ToList();
+            return db.Products.Where(x => x.Brand != null).Select(x => x.Brand).Distinct().ToList();
         }
 
         [HttpPut("buyProduct")]
         public string BuyProduct(Guid id)
         {
-            var result2 = ProductRepository.SingleOrDefault(x => x.Id == id);
+            var result2 = db.Products.SingleOrDefault(x => x.Id == id);
             result2.BuyProduct();
+            db.SaveChanges();
             return "You just bought the product. Your order is being processed.";
         }
 
         [HttpGet("main")]
         public object main()
         {
-             return ProductRepository
+             return db.Products
                 .FirstOrDefault(x => 
                 (x.Price > 5000 || (x.Price < 100 && x.Price>10)) && 
                 (x.Brand != null ? (x.Brand.Length>5) : false) &&

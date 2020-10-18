@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplication3.Controllers;
+using WebApplication3.EF;
 
 namespace WebApplication3
 {
@@ -41,6 +43,15 @@ namespace WebApplication3
             {
                 endpoints.MapControllers();
             });
+
+            using (var db = new ShopContext())
+            {
+                if(db.Products.Count() == 0)
+                {
+                    db.Products.AddRange(ProductsController.ProductRepository);
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }
