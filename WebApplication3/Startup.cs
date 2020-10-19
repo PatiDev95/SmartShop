@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication3.Controllers;
 using WebApplication3.EF;
+using WebApplication3.Services;
 
 namespace WebApplication3
 {
@@ -48,7 +49,7 @@ namespace WebApplication3
             {
                 if(db.Products.Count() == 0)
                 {
-                    db.Products.AddRange(ProductsController.ProductRepository);
+                    db.Products.AddRange(DataInitializer.ProductRepository);
                     db.SaveChanges();
                 }
             }
