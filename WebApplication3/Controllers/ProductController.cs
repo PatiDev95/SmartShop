@@ -36,13 +36,29 @@ namespace WebApplication3.Controllers
             }
         }
 
+        [HttpGet("product/{id}")]
+        public Product GetProductById(Guid id)
+        {
+            var product =  db.Products.SingleOrDefault(x => x.Id == id);
+            if(product != null)
+            {
+                return product;
+            }
+            else
+            {
+                throw new Exception($"There is no product with this id: {id}");
+            }
+            
+
+        }
+
         [HttpPost]
-        public Product Create([FromBody] CreateProduct command)
+        public ActionResult<Product> Create([FromBody] CreateProduct command)
         {
             var newProduct = new Product(command.Category, command.Price, command.Name, command.Description, command.ProductCondition);
             db.Products.Add(newProduct);
             db.SaveChanges();
-            return newProduct;
+            return Created($"/product/{newProduct.Id}", newProduct);
         }
 
         [HttpGet("search")]
