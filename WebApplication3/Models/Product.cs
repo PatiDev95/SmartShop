@@ -29,6 +29,7 @@ namespace WebApplication3.Models
         public string Brand { get; set; }
         public double Weight { get; set; }
         public bool IsArchived { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public Product(string category, decimal price, string name, string description, ProductCondition productCondition)
         {
@@ -39,6 +40,7 @@ namespace WebApplication3.Models
             SetDescription(description);
             ProductCondition = productCondition;
             IsArchived = false;
+            CreatedAt = DateTime.Now;
         }
 
         public void BuyProduct()
