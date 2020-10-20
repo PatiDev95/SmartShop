@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Linq;
 
-namespace WebApplication3.Models
+namespace HappyShop.Core.Domain
 
 {
     public class Product
@@ -11,18 +11,19 @@ namespace WebApplication3.Models
         public decimal Price { get; protected set; }
         public string Name { get; protected set; }
         public int? Discount { get; protected set; }
-        public decimal RealPrice { 
-            get 
+        public decimal RealPrice
+        {
+            get
             {
-                if(Discount==null)
+                if (Discount == null)
                 {
                     return Price;
                 }
                 else
                 {
-                    return Price - (Price * Discount.Value / 100);
+                    return Price - Price * Discount.Value / 100;
                 }
-            } 
+            }
         }
         public string Description { get; set; }
         public ProductCondition ProductCondition { get; set; }
@@ -45,19 +46,19 @@ namespace WebApplication3.Models
 
         public void BuyProduct()
         {
-            if(IsArchived == false)
+            if (IsArchived == false)
             {
                 IsArchived = true;
             }
             else
             {
                 throw new Exception("The product has just been sold. You cannot buy the product.");
-            } 
+            }
         }
 
         public Product WithWeight(double weight)
         {
-            if(weight<0)
+            if (weight < 0)
             {
                 throw new Exception("Weight can not be less than 0.");
             }
@@ -84,12 +85,12 @@ namespace WebApplication3.Models
             Brand = brand;
             return this;
         }
-        
+
         public void SetName(string name)
         {
-           ValidateSpecialCharacters(name, "There is an illegal character in the product name: {0}.");
+            ValidateSpecialCharacters(name, "There is an illegal character in the product name: {0}.");
 
-            if (name.Length>250 || name.Length<5)
+            if (name.Length > 250 || name.Length < 5)
             {
                 throw new Exception($"Incorrect number of characters in the name: {name.Length}. Valid name length 5-250 characters.");
             }
@@ -99,7 +100,7 @@ namespace WebApplication3.Models
 
         public void SetDescription(string description)
         {
-            if(description.Length>5000)
+            if (description.Length > 5000)
             {
                 throw new Exception($"The description exceeds the number of characters allowed. Your number of characters: {description.Length} The maximum number of characters is: 5000");
             }

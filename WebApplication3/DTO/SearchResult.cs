@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using WebApplication3.Models;
+﻿using HappyShop.Core.Domain;
+using System.Collections.Generic;
 
 namespace WebApplication3.DTO
 {

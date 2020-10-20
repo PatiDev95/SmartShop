@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApplication3.Models;
+﻿using HappyShop.Core.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication3.EF
 {

@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HappyShop.Core.Domain;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using WebApplication3.Commands;
 using WebApplication3.DTO;
 using WebApplication3.EF;
-using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
 {
