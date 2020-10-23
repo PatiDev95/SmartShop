@@ -1,6 +1,6 @@
 using HappyShop.Core.Domain;
 using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Xunit;
 
 namespace HappyShop.Tests
@@ -8,7 +8,7 @@ namespace HappyShop.Tests
     public class ProductTest
     {
         [Fact]
-        public void WhenPurchasingAProductTheProductShouldBeArchived()
+        public void should_be_archived_when_purchasing_the_product()
         {
             //Arrange
             var newProduct = new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New);
@@ -21,7 +21,7 @@ namespace HappyShop.Tests
         }
 
         [Fact]
-        public void ThereShouldBeAnExceptionWhenBuyingAProductAlreadyPurchased()
+        public void should_be_an_exception_when_buying_a_product_already_purchased()
         {
             //Arrange
             var product = new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New);
@@ -35,7 +35,7 @@ namespace HappyShop.Tests
         }
 
         [Fact]
-        public void TheConstructorShouldAssignValuesCorrectly()
+        public void should_assign_values_correctly_in_the_constructor()
         {
             //Arrange i Act
             var product = new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New);
@@ -49,36 +49,34 @@ namespace HappyShop.Tests
         }
 
         [Fact]
-        public void WhenCreatingANewProductANameShorterThan5CharactersShouldResultInAnError()
+        public void should_throw_error_when_creating_a_new_product_a_name_shorter_than_five_characters()
         {
             //Arrange and Act, Assert
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿", "w cêtki", ProductCondition.New));
         }
 
         [Fact]
-        public void WhenCreatingANewProductASpecialCharacterInTheNameShouldThrowAnError()
+        public void should_throw_an_error_when_creating_a_new_product_with_special_character_in_the_name()
         {
             //Arrange and Act, Assert
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿@mk@", "w cêtki", ProductCondition.New));
         }
 
         [Fact]
-        public void blablabla()
+        public void should_throw_exception_on_validation_description()
         {
-            
-
             //Arrange and Act, Assert
-            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿@mk@", "w cêtki", ProductCondition.New));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", CreateLongText(), ProductCondition.New));
         }
 
-        public void CreateLongText()
+        private static string CreateLongText()
         {
-            string dlugiTekst = "bla bla bla";
-            for (int i = 0; i < 100; i++)
+            StringBuilder dlugiTekst = new StringBuilder("1234567890");
+            for (int i = 0; i < 500; i++)
             {
-                dlugiTekst += dlugiTekst;
+                dlugiTekst.Append("1234567890");
             }
-
+            return dlugiTekst.ToString();
         }
     }
 }
