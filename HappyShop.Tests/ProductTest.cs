@@ -37,7 +37,7 @@ namespace HappyShop.Tests
         [Fact]
         public void should_assign_values_correctly_in_the_constructor()
         {
-            //Arrange i Act
+            //Arrange and Act
             var product = new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New);
            
             //Assert
@@ -49,34 +49,14 @@ namespace HappyShop.Tests
         }
 
         [Fact]
-        public void should_throw_error_when_creating_a_new_product_a_name_shorter_than_five_characters()
+        public void should_throw_exception_on_string_validation()
         {
-            //Arrange and Act, Assert
+            //Arrange, Act and Assert
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", new string('a', 5001), ProductCondition.New));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, new string('a', 251), "w cêtki", ProductCondition.New));
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿", "w cêtki", ProductCondition.New));
-        }
-
-        [Fact]
-        public void should_throw_an_error_when_creating_a_new_product_with_special_character_in_the_name()
-        {
-            //Arrange and Act, Assert
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿@mk@", "w cêtki", ProductCondition.New));
         }
 
-        [Fact]
-        public void should_throw_exception_on_validation_description()
-        {
-            //Arrange and Act, Assert
-            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", CreateLongText(), ProductCondition.New));
-        }
-
-        private static string CreateLongText()
-        {
-            StringBuilder dlugiTekst = new StringBuilder("1234567890");
-            for (int i = 0; i < 500; i++)
-            {
-                dlugiTekst.Append("1234567890");
-            }
-            return dlugiTekst.ToString();
-        }
     }
 }
