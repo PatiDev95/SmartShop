@@ -1,8 +1,12 @@
 ﻿using HappyShop.Core.Domain;
+using HappyShop.Core.Repositories;
+using HappyShop.Infrastructure.Repositories;
+using HappyShop.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WebApplication3.Commands;
 using WebApplication3.DTO;
 using WebApplication3.EF;
@@ -13,11 +17,17 @@ namespace WebApplication3.Controllers
     public partial class ProductsController : Controller
     {
         private readonly ShopContext db = new ShopContext();
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService;
+        }
 
         [HttpGet]
-        public List<Product> GetAllListOfProducts()
+        public async Task <List<Product>> GetAllListOfProducts()
         {
-            return db.Products.Where(x => x.IsArchived == false).ToList();
+            return await _productService.GetAllAsync();
         }
 
         [HttpGet("category/{category}")]

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HappyShop.Core.Repositories;
+using HappyShop.Infrastructure.Repositories;
+using HappyShop.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +25,8 @@ namespace WebApplication3
             services.AddControllers()
                  .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
             services.AddSwaggerGen();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HappyShop.Core\HappyShop.Core.csproj" />
+    <ProjectReference Include="..\HappyShop.Infrastructure\HappyShop.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
