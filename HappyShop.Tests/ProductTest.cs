@@ -49,14 +49,17 @@ namespace HappyShop.Tests
         }
 
         [Fact]
-        public void should_throw_exception_on_string_validation()
+        public void should_throw_exception_on_product_validation()
         {
             //Arrange, Act and Assert
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", new string('a', 5001), ProductCondition.New));
             Assert.Throws<Exception>(() => new Product("ubrania", 120, new string('a', 251), "w cêtki", ProductCondition.New));
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿", "w cêtki", ProductCondition.New));
             Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿@mk@", "w cêtki", ProductCondition.New));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New).WithBrand("@didas"));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New).WithDiscount(91));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New).WithDiscount(-5));
+            Assert.Throws<Exception>(() => new Product("ubrania", 120, "Pi¿amka", "w cêtki", ProductCondition.New).WithWeight(-5));
         }
-
     }
 }
